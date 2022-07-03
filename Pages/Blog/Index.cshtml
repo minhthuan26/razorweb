@@ -1,0 +1,72 @@
+@page
+@model EFIntegrated.Pages_Blog.IndexModel
+
+@{
+    ViewData["Title"] = "Post List";
+    var index = 0;
+}
+
+<h1>Post List</h1>
+
+<form method="get">
+    <label>Search</label>
+    <input name="SearchString" value="" />
+    <button type="submit">Search</button>
+</form>
+
+<p class="mt-2">
+    <a asp-page="Create" class="btn btn-primary">Create New Post</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Index
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Article[0].PublishDate)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Article[0].Content)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Article) {
+        <tr>
+            <td>
+                @(++index)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PublishDate)
+            </td>
+            @*<td>
+                @Html.DisplayFor(modelItem => item.Content)
+            </td>*@
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-success">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID" class="btn btn-info">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@{
+    var pagingModel = new EFIntegrated.Helpers.PagingModel()
+    {
+        currentPage = Model.currentPage,
+        countPages = Model.countPages,
+        generateUrl = (int? page) => @Url.Page("/Blog/Index", new {_page = page})
+    };
+}
+
+<partial name="_Paging" model="@pagingModel" />
