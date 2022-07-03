@@ -7,7 +7,7 @@ namespace EFIntegrated.Models
     {
         [Key]
         public int ID { get; set; }
-        [StringLength(255)]
+        [StringLength(255, MinimumLength = 5)]
         [Required]
         [Column(TypeName = "nvarchar")]
         public string Title { get; set; }
